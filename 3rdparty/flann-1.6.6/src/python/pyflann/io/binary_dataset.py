@@ -55,11 +55,11 @@ def load(filename, rows = -1, cols = -1, dtype = numpy.float32):
     
     if os.path.isfile(filename+".meta"):        
         with open(filename+".meta","r") as fd:
-            header = fd.readline()
+            header = fd.readline(5_000_000)
             assert( header[0:6] == "BINARY")
-            rows = int(fd.readline())
-            cols = int(fd.readline())
-            dtype = numpy.dtype(fd.readline().strip())
+            rows = int(fd.readline(5_000_000))
+            cols = int(fd.readline(5_000_000))
+            dtype = numpy.dtype(fd.readline(5_000_000).strip())
     else:
         if rows==-1 or cols==-1:
             raise "No .meta file present, you must specify dataset rows, cols asd dtype"

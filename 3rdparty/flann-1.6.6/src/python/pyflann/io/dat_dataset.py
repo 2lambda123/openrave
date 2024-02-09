@@ -40,9 +40,9 @@ def is_number(s):
 
 def check(filename):
     with open(filename,"r") as f:
-        line = f.readline().strip()
+        line = f.readline(5_000_000).strip()
         if line[0]=='#':  # first line might be a comment
-            line = f.readline().strip()
+            line = f.readline(5_000_000).strip()
     
     values = line.split()    
     if len(values)==0:
