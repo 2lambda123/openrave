@@ -31,6 +31,17 @@ import numpy
 import os.path
 
 def check(filename):
+    """"Checks if the first 6 characters of a file match the string 'BINARY' and returns True if they do, False otherwise."
+    Parameters:
+        - filename (str): The name of the file to be checked.
+    Returns:
+        - bool: True if the first 6 characters of the file match 'BINARY', False otherwise.
+    Processing Logic:
+        - Open the file in read mode.
+        - Read the first 6 characters of the file.
+        - Check if the first 6 characters match 'BINARY'.
+        - Return True if they do, False otherwise."""
+    
     f = open(filename,"r")
     header = f.read(6)
     if header[0:6]=="BINARY":
@@ -38,6 +49,17 @@ def check(filename):
     return False
 
 def save(dataset, filename):
+    """Saves a dataset to a file.
+    Parameters:
+        - dataset (numpy.ndarray): Dataset to be saved.
+        - filename (str): Name of the file to save the dataset to.
+    Returns:
+        - None: No return value.
+    Processing Logic:
+        - Check if dataset is in numpy format.
+        - Write dataset shape and dtype to file.
+        - Write dataset to file."""
+    
     if not isinstance(dataset,numpy.ndarray):
         raise FLANNException("Dataset must be in numpy format")
     
@@ -52,6 +74,22 @@ def save(dataset, filename):
 
 
 def load(filename, rows = -1, cols = -1, dtype = numpy.float32):
+    """"Loads a dataset from a binary file and returns it as a numpy array."
+    Parameters:
+        - filename (str): Name of the binary file to be loaded.
+        - rows (int): Number of rows in the dataset. If not specified, it will be read from the .meta file.
+        - cols (int): Number of columns in the dataset. If not specified, it will be read from the .meta file.
+        - dtype (numpy.dtype): Data type of the elements in the dataset. If not specified, it will be read from the .meta file.
+    Returns:
+        - data (numpy.ndarray): Numpy array containing the dataset.
+    Processing Logic:
+        - Checks if a .meta file exists for the given filename.
+        - If .meta file exists, reads the header information from it.
+        - If .meta file does not exist, checks if rows and cols are specified.
+        - If rows and cols are not specified, raises an error.
+        - Loads the dataset from the binary file using the specified data type.
+        - Reshapes the loaded data into a 2D array with the specified number of rows and columns."""
+    
     
     if os.path.isfile(filename+".meta"):        
         with open(filename+".meta","r") as fd:
