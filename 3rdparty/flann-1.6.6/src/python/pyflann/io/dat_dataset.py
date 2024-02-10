@@ -32,6 +32,16 @@ from scipy.io.numpyio import fwrite
 
 
 def is_number(s):
+    """Checks if a given string is a number.
+    Parameters:
+        - s (str): String to be checked.
+    Returns:
+        - bool: True if s is a number, False otherwise.
+    Processing Logic:
+        - Try to convert s to float.
+        - If successful, return True.
+        - If ValueError is raised, return False."""
+    
     try:
         float(s)
         return True
@@ -39,6 +49,19 @@ def is_number(s):
         return False
 
 def check(filename):
+    """Checks if the given file contains a line of numbers.
+    Parameters:
+        - filename (str): The name of the file to be checked.
+    Returns:
+        - bool: True if the file contains a line of numbers, False otherwise.
+    Processing Logic:
+        - Open the file and read the first line.
+        - If the first line starts with a '#', read the next line.
+        - Split the line into a list of values.
+        - If the list is empty, return False.
+        - Check if all values in the list are numbers.
+        - Return the result."""
+    
     with open(filename,"r") as f:
         line = f.readline(5_000_000).strip()
         if line[0]=='#':  # first line might be a comment
@@ -51,10 +74,35 @@ def check(filename):
     
 
 def save(dataset, filename):
+    """Saves a numpy array to a specified file.
+    Parameters:
+        - dataset (numpy.ndarray): The numpy array to be saved.
+        - filename (str): The name of the file to save the array to.
+    Returns:
+        - None: The function does not return anything.
+    Processing Logic:
+        - Check if dataset is a numpy array.
+        - Raise an exception if dataset is not a numpy array.
+        - Save the dataset to the specified file using numpy.savetxt."""
+    
     if not isinstance(dataset,numpy.ndarray):
         raise FLANNException("Can only save numpy arrays")    
     numpy.savetxt(filename,dataset, fmt="%g")
 
 def load(filename, rows = -1, cols = -1, dtype = numpy.float32):
+    """"Loads a dataset from a given file and returns it as a numpy array."
+    Parameters:
+        - filename (str): Name of the file to load the dataset from.
+        - rows (int, optional): Number of rows to load from the dataset. Default is -1, which loads all rows.
+        - cols (int, optional): Number of columns to load from the dataset. Default is -1, which loads all columns.
+        - dtype (numpy.dtype, optional): Data type of the elements in the returned array. Default is numpy.float32.
+    Returns:
+        - dataset (numpy.ndarray): Numpy array containing the loaded dataset.
+    Processing Logic:
+        - Loads the dataset using numpy.loadtxt().
+        - Allows for specifying the number of rows and columns to load.
+        - Uses numpy.float32 as the default data type.
+        - Returns the loaded dataset as a numpy array."""
+    
     dataset = numpy.loadtxt(filename, dtype=dtype)
     return dataset
